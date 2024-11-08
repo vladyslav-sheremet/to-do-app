@@ -96,11 +96,15 @@ const searchHandler = (name: string) => {
   const foundUsers = users.value.filter((user: User) =>
       user.name.toLowerCase().includes(name.toLowerCase()),
   );
-  filteredUsers.value = paginate(
-      foundUsers,
-      currentPage.value,
-      itemsPerPage.value,
-  );
+  if (foundUsers.length > 5) {
+    filteredUsers.value = paginate(
+        foundUsers,
+        currentPage.value,
+        itemsPerPage.value,
+    );
+  } else {
+    filteredUsers.value = foundUsers;
+  }
 };
 </script>
 
