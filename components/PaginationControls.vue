@@ -8,16 +8,26 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
+import { toRefs } from "vue";
 
 import { useUsersStore } from "~/store/users";
+
+const props = defineProps<{
+  amountOfItems: number;
+}>();
+
+const { amountOfItems } = toRefs(props);
 
 const usersStore = useUsersStore();
 const { currentPage, itemsPerPage, users } = storeToRefs(usersStore);
 const { prevHandler, nextHandler } = usersStore;
 
 const isNextDisabled = computed(() => {
-  return currentPage.value * itemsPerPage.value >= users.value.length
-})
+  return (
+      currentPage.value * itemsPerPage.value >= users.value.length ||
+      amountOfItems.value < itemsPerPage.value
+  );
+});
 </script>
 
 <style lang="scss" scoped>
